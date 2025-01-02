@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "csv-stringify": "^6.5.2",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "luxon": "^3.5.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "concurrently \"nodemon app.js\" \"npm run watch:css\"",
+    "build:css": "tailwindcss -i ./public/src/tailwind.css -o ./public/css/styles.css --minify",
+    "watch:css": "tailwindcss -i ./public/src/tailwind.css -o ./public/css/styles.css --watch",
+    "heroku-postbuild": "npm run build:css"
+  }
+}
