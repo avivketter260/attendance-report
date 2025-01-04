@@ -35,9 +35,13 @@ const normalizeDate = (day, month, year) => {
 
 const isWeekend = (dayOfWeek) => dayOfWeek === WEEKDAYS.FRIDAY || dayOfWeek === WEEKDAYS.SATURDAY;
 
-const isWorkFromHomeDay = (dayOfWeek) => dayOfWeek === WEEKDAYS.TUESDAY;
+const isWorkFromHomeDay = (date, normalizedWfhDays) => {
+  const dayOfWeek = date.weekday;
+  const isoDate = date.toISODate();
+  return dayOfWeek === WEEKDAYS.TUESDAY || normalizedWfhDays.includes(isoDate);
+};
 
-const generateDayData = (date, normalizedSickDays, normalizedDaysOff) => {
+const generateDayData = (date, normalizedSickDays, normalizedDaysOff, normalizedWfhDays) => {
   const isoDate = date.toISODate();
   const dayOfWeek = date.weekday;
 
@@ -55,14 +59,14 @@ const generateDayData = (date, normalizedSickDays, normalizedDaysOff) => {
     dayData.dayOff = MARKERS.PRESENT;
   } else if (!isWeekend(dayOfWeek)) {
     dayData.hours = WORKING_HOURS;
-    dayData.officeHome = isWorkFromHomeDay(dayOfWeek) ? 
+    dayData.officeHome = isWorkFromHomeDay(date, normalizedWfhDays) ? 
       WORK_LOCATIONS.HOME : WORK_LOCATIONS.OFFICE;
   }
 
   return Object.values(dayData);
 };
 
-const generateCSV = (month, year, sickDays = [], daysOff = []) => {
+const generateCSV = (month, year, sickDays = [], daysOff = [], workFromHome = []) => {
   try {
     // Validate month
     if (!month || month < MONTH_VALIDATION.MIN || month > MONTH_VALIDATION.MAX) {
@@ -79,10 +83,11 @@ const generateCSV = (month, year, sickDays = [], daysOff = []) => {
 
     const normalizedSickDays = sickDays.map(d => normalizeDate(d, month, year));
     const normalizedDaysOff = daysOff.map(d => normalizeDate(d, month, year));
+    const normalizedWfhDays = workFromHome.map(d => normalizeDate(d, month, year));
 
     const csvData = [];
     for (let date = startDate; date <= endDate; date = date.plus({ days: 1 })) {
-      const rowData = generateDayData(date, normalizedSickDays, normalizedDaysOff);
+      const rowData = generateDayData(date, normalizedSickDays, normalizedDaysOff, normalizedWfhDays);
       csvData.push(rowData);
     }
 

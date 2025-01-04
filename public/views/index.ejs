@@ -48,7 +48,7 @@
           id="sickDays" 
           name="sickDays" 
           pattern="\d+(?:,\d+)*"
-          placeholder="e.g., 16,17" 
+          placeholder="e.g., 16,17 (No spaces)" 
           class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           title="Enter comma-separated numbers">
       </div>
@@ -60,7 +60,19 @@
           id="daysOff" 
           name="daysOff" 
           pattern="\d+(?:,\d+)*"
-          placeholder="e.g., 5,26" 
+          placeholder="e.g., 5,26 (No spaces)" 
+          class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          title="Enter comma-separated numbers">
+      </div>
+      
+      <div class="form-group">
+        <label for="workFromHome" class="block text-gray-700">Additional Work From Home Days:</label>
+        <input 
+          type="text" 
+          id="workFromHome" 
+          name="workFromHome" 
+          pattern="\d+(?:,\d+)*"
+          placeholder="e.g., 1,15 (No spaces)" 
           class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           title="Enter comma-separated numbers">
       </div>

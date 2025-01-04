@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/generate', (req, res) => {
-  const { month, year, sickDays, daysOff } = req.body;
+  const { month, year, sickDays, daysOff, workFromHome } = req.body;
   
   // Parse inputs
   const parsedMonth = parseInt(month);
@@ -42,10 +42,13 @@ app.post('/generate', (req, res) => {
   const off = daysOff 
     ? daysOff.split(',').map(d => parseInt(d.trim())).filter(d => !isNaN(d)) 
     : [];
+  const wfh = workFromHome
+    ? workFromHome.split(',').map(d => parseInt(d.trim())).filter(d => !isNaN(d))
+    : [];
 
   try {
     // Generate CSV string
-    const csvString = generateCSV(parsedMonth, parsedYear, sick, off);
+    const csvString = generateCSV(parsedMonth, parsedYear, sick, off, wfh);
     
     // Set headers to prompt download
     res.setHeader('Content-Disposition', `attachment; filename=attendance_report_${parsedMonth}_${parsedYear}.csv`);
